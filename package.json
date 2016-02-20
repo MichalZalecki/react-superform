@@ -1,0 +1,17 @@
+{
+  "name": "react-superform",
+  "version": "0.0.0",
+  "description": "Form with superpowers for ReactJS",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichalZalecki/react-superform.git"
+  },
+  "author": "Michal Zalecki <michal@michalzalecki.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MichalZalecki/react-superform/issues"
+  },
+  "homepage": "https://github.com/MichalZalecki/react-superform#readme"
+}
