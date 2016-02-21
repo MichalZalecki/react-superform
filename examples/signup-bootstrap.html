@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Superform - SignUp Form Bootstrap Example</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <style>
+    .panel-signup {
+      max-width: 500px;
+      margin: 60px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.5.0/lodash.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/validator/4.0.5/validator.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+  <script src="../lib/react-superform.js"></script>
+  <script type="text/babel">
+    class MyForm extends Superform {
+      handleSubmit(event) {
+        super.handleSubmit(event).then(() => {
+          this.isFormValid() && alert(`Submitted with:\n${JSON.stringify(this.getData(), 2, 2)}`);
+        });
+      }
+
+      render() {
+        return (
+          <div className="container">
+            <div className="col-xs-12">
+              <form noValidate onSubmit={ this.handleSubmit.bind(this) }>
+                <div
+                  className={`panel panel-signup
+                    ${!this.isSubmited() ? "panel-primary": ""}
+                    ${this.isSubmited() && this.isFormValid() ? "panel-success": ""}
+                    ${this.isSubmited() && !this.isFormValid() ? "panel-danger": ""}
+                  `}>
+                  <div className="panel-heading">Sign up</div>
+                  <div className="panel-body">
+                    <div className={`form-group ${this.getErrorMessageOf("email") ? "has-error" : "" }`}>
+                      <label className="control-label" htmlFor="email">Email</label>
+                      <input
+                        type="email" className="form-control" name="email" id="email" ref="email"
+                        valueLink={this.linkStateOf("email")} required/>
+                      <span className="help-block">{ this.getErrorMessageOf("email") }</span>
+                    </div>
+
+                    <div className={`form-group ${this.getErrorMessageOf("password") ? "has-error" : "" }`}>
+                      <label className="control-label" htmlFor="password">Password</label>
+                      <input
+                        type="password" className="form-control" name="password" id="password" ref="password"
+                        valueLink={this.linkStateOf("password")} pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*"
+                        data-messages={JSON.stringify({
+                          pattern: "Password must contain at least one digit, upper case and lower case letter",
+                          minLength: "Password must contain at least :data characters"
+                        })}
+                        minLength="8" required/>
+                      <span className="help-block">{ this.getErrorMessageOf("password") }</span>
+                    </div>
+
+                    <div className={`form-group ${this.getErrorMessageOf("repeatPassword") ? "has-error" : "" }`}>
+                      <label className="control-label" htmlFor="repeatPassword">Repeat Password</label>
+                      <input
+                        type="password" className="form-control" name="repeatPassword" id="repeatPassword" ref="repeatPassword"
+                        valueLink={this.linkStateOf("repeatPassword")}
+                        data-equals="password"
+                        data-messages={JSON.stringify({
+                          equals: "Passwords doesn't match"
+                        })}
+                        required/>
+                      <span className="help-block">{ this.getErrorMessageOf("repeatPassword") }</span>
+                    </div>
+
+                    <div className={`form-group ${this.getErrorMessageOf("mood") ? "has-error" : "" }`}>
+                      <label className="control-label" htmlFor="mood">Mood</label>
+                      <select className="form-control" name="mood" id="mood" ref="mood" valueLink={this.linkStateOf("mood")} required>
+                        <option value="">Select&hellip;</option>
+                        <option value="Happy">Happy</option>
+                        <option value="Cool">Cool</option>
+                        <option value="Undecided">Undecided</option>
+                        <option value="Sad">Sad</option>
+                        <option value="Crying">Crying</option>
+                      </select>
+                      <span className="help-block">{ this.getErrorMessageOf("mood") }</span>
+                    </div>
+
+                    <div className={ this.getErrorMessageOf("acceptConditions") ? "has-error" : "" }>
+                      <div className="checkbox">
+                        <label>
+                          <input type="checkbox" name="acceptConditions" ref="acceptConditions"
+                            valueLink={this.linkStateOf("acceptConditions")} required/>
+                          I'll behave nicely. { this.getErrorMessageOf("acceptConditions") }
+                        </label>
+                      </div>
+                    </div>
+
+                    <input type="submit" className="btn btn-success" value="Sign up"/>
+                  </div>
+                </div>
+
+                <h2>Data</h2>
+                <pre>{ JSON.stringify(this.state.data, 2, 2) }</pre>
+              </form>
+            </div>
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(<MyForm />, document.getElementById("root"))
+  </script>
+</body>
+</html>
