@@ -28,11 +28,7 @@ var config = {
   },
   module: {
     loaders: [
-      {
-        test: /(\.jsx|\.js)$/,
-        loader: 'babel',
-        exclude: /(node_modules|bower_components)/
-      }
+      { test: /.js$/, loader: 'babel', exclude: /node_modules/ }
       // ,
       // {
       //   test: /(\.jsx|\.js)$/,
