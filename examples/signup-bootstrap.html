@@ -5,7 +5,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <style>
     .panel-signup {
-      max-width: 500px;
       margin: 60px auto;
     }
   </style>
@@ -29,7 +28,7 @@
       render() {
         return (
           <div className="container">
-            <div className="col-xs-12">
+            <div className="col-xs-12 col-md-6 col-md-offset-3">
               <form noValidate onSubmit={ this.handleSubmit.bind(this) }>
                 <div
                   className={`panel panel-signup
