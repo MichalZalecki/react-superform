@@ -17,19 +17,22 @@ npm i -S react-superform
 React Superform lets you create validatable `<form>` with HTML5 form elements regardless of HTML5 validation support. Create your component and extend `Superform` class instead of `React.Component` use inherited methods to make your form awesome and user friendly!
 
 ```javascript
+import Superform from "react-superform";
+
 class MyForm extends Superform {
   onSuccessSubmit(data) {
-    console.dir(data);
+    console.log(data);
   }
 
   onErrorSubmit(errors, data) {}
 
-  render {
+  render() {
     return (
-      <form onSubmit={ this.handleSubmit.bind(this) }>
+      <form noValidate onSubmit={ this.handleSubmit.bind(this) }>
         <input
           type="email" // validate email
           ref="email"  // ref is required to read the attributes
+          name="email" // name field
           valueLink={ this.linkStateOf("email") } // two way data binding
           required     // field is required
         />
@@ -39,6 +42,8 @@ class MyForm extends Superform {
     );
   }
 }
+
+ReactDOM.render(<MyForm />, document.getElementById("root"));
 ```
 
 **That's it, you are ready to go!**
