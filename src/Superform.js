@@ -90,7 +90,7 @@ export default class Superform extends React.Component {
   getErrorMessageOf(name) {
     if (!this.isSubmited() || this.isFieldValid(name)) return null;
     const error   = _(this.getErrorsOf(name)).first();
-    const message =  this._getMessage(error.rule, name);
+    const message =  this._getMessage(name, error.rule);
     return error.data ? this._parseMessage(message, error.data) : message;
   }
 
@@ -121,12 +121,6 @@ export default class Superform extends React.Component {
     });
   }
 
-  _getCustomMessagesOf(name) {
-    const msgDataset = this.refs[name].dataset.messages;
-    const messages   = msgDataset ? JSON.parse(msgDataset) : {};
-    return messages;
-  }
-
   _getCustomMessageForRuleOf(name, rule) {
     const messages = this._getCustomMessagesOf(name);
     const message  = messages[rule];
@@ -139,7 +133,7 @@ export default class Superform extends React.Component {
     return messages;
   }
 
-  _getMessage(rule, name) {
+  _getMessage(name, rule) {
     const message = this._getCustomMessageForRuleOf(name, rule) || this.constructor.DEFAULT_MESSAGES[rule];
     if (!message) throw new Error(`Superform: There is no message for such rule. Passed: ${rule}`);
     return message;
