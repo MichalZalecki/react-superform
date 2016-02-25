@@ -18,7 +18,14 @@ export default class Superform extends React.Component {
     const errors = this._createErrors();
     return this.markAsSubmitted()
       .then(() => this._updateErrors(errors))
+      .then(() => this.isFormValid() ?
+        this.onSuccessSubmit(this.state.data) :
+        this.onErrorSubmit(this.state.errors, this.state.data));
   }
+
+  onSuccessSubmit(data) {}
+
+  onErrorSubmit(errors, data) {}
 
   handleChange(event) {
     const name   = event.target.name;

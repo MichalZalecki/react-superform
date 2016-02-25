@@ -19,10 +19,12 @@
   <script src="../lib/react-superform.js"></script>
   <script type="text/babel">
     class MyForm extends Superform {
-      handleSubmit(event) {
-        super.handleSubmit(event).then(() => {
-          this.isFormValid() && alert(`Submitted with:\n${JSON.stringify(this.getData(), 2, 2)}`);
-        });
+      onSuccessSubmit(data) {
+        alert(`Success submit with:\n${JSON.stringify(data, 2, 2)}`);
+      }
+
+      onErrorSubmit(errors, data) {
+        alert(`Error submit with:\n${JSON.stringify(data, 2, 2)}\n and errors:\n${JSON.stringify(errors, 2, 2)}`);
       }
 
       render() {
