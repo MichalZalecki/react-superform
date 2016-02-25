@@ -1,6 +1,6 @@
 {
   "name": "react-superform",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Form with superpowers for ReactJS",
   "dependencies": {
     "lodash": "^4.5.0",
