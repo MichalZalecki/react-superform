@@ -262,5 +262,106 @@ describe("Superform", () => {
       });
     });
   });
+
+  describe("_getCustomMessagesOf", () => {
+    it("returns custom messages of field", () => {
+      component.refs = {
+        name: (() => {
+          const node = document.createElement("input");
+          node.required = true;
+          node.type = "email";
+          node.dataset.messages = JSON.stringify({ required: "Foo", email: "Bar" });
+          return node; })()
+      };
+      expect(component._getCustomMessagesOf("name")).toEqual({required: "Foo", email: "Bar"});
+    });
+  });
+
+  describe("_getCustomMessageForRuleOf", () => {
+    it("returns custom messages of field for the specified rule", () => {
+      component.refs = {
+        name: (() => {
+          const node = document.createElement("input");
+          node.required = true;
+          node.type = "email";
+          node.dataset.messages = JSON.stringify({ required: "Foo", email: "Bar" });
+          return node; })()
+      };
+      expect(component._getCustomMessageForRuleOf("name", "email")).toEqual("Bar");
+    });
+
+    it("returns undefined for the specified rule if custom message doesn't exist", () => {
+      component.refs = {
+        name: (() => {
+          const node = document.createElement("input");
+          node.required = true;
+          node.dataset.messages = JSON.stringify({ required: "Foo" });
+          return node; })()
+      };
+      expect(component._getCustomMessageForRuleOf("name", "email")).toBeUndefined();
+    });
+  });
+
+  describe("_getMessage", () => {
+    it("returns custom message for rule if specified", () => {
+      component.refs = {
+        name: (() => {
+          const node = document.createElement("input");
+          node.required = true;
+          node.dataset.messages = JSON.stringify({ required: "Foo" });
+          return node; })()
+      };
+      expect(component._getMessage("name", "required")).toEqual("Foo");
+    });
+
+    it("returns default message if rule not specified", () => {
+      component.refs = {
+        name: (() => {
+          const node = document.createElement("input");
+          node.required = true;
+          node.dataset.messages = JSON.stringify({ required: "Foo" });
+          return node; })()
+      };
+      expect(component._getMessage("name", "email")).toEqual("This is not a valid email.");
+    });
+
+    it("returns default message if rule not specified", () => {
+      component.refs = {
+        name: (() => {
+          const node = document.createElement("input");
+          node.required = true;
+          node.dataset.messages = JSON.stringify({ required: "Foo" });
+          return node; })()
+      };
+      expect(() => {component._getMessage("name", "foo")})
+        .toThrowError("Superform: There is no message for such rule. Passed: foo");
+    });
+  });
+
+  describe("_parseMessage", () => {
+    it("parses message", () => {
+      const message = "This is :data message";
+      const data = "awesome";
+      expect(component._parseMessage(message, data)).toEqual("This is awesome message");
+    });
+  });
+
+  describe("_validateNode", () => {
+    it("validates node returning set of errors", () => {
+      const node = document.createElement("input");
+      node.type = "email";
+      node.required = "true";
+      node.value = "wrong@email";
+      expect(component._validateNode(node)).toEqual([ { rule: "email" } ]);
+    });
+
+    it("returns empty array if there is no errors", () => {
+      const node = document.createElement("input");
+      node.type = "email";
+      node.required = "true";
+      node.value = "correct@email.com";
+      expect(component._validateNode(node)).toEqual([]);
+    });
+  });
 });
 
