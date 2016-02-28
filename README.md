@@ -46,7 +46,7 @@ class MyForm extends Superform {
 ReactDOM.render(<MyForm />, document.getElementById("root"));
 ```
 
-[Working example](https://jsfiddle.net/MichalZalecki/dq5L6b3d/)
+[Working example](https://jsfiddle.net/MichalZalecki/gh3L24h6/)
 
 **That's it, you are ready to go!**
 
