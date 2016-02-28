@@ -239,7 +239,6 @@ class Superform extends React.Component {
 
   /** */
   _validateNode(node) {
-    const name  = node.name;
     const value = this._getNodeValue(node);
     const rules = this._collectRules(node);
     const fails = this._validate(value, rules);
