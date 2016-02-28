@@ -2,7 +2,8 @@ import React from "react";
 import _ from "lodash";
 import validator from "validator";
 
-export default class Superform extends React.Component {
+/** Superform's Superclass */
+class Superform extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,20 +14,27 @@ export default class Superform extends React.Component {
     };
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const errors = this._createErrors();
-    return this.markAsSubmitted()
-      .then(() => this._updateErrors(errors))
-      .then(() => this.isFormValid() ?
-        this.onSuccessSubmit(this.state.data) :
-        this.onErrorSubmit(this.state.errors, this.state.data));
-  }
-
+  /**
+   * Called on form success submission.
+   *
+   * @param data {Object} Form data with all fields valid
+   */
   onSuccessSubmit(data) {}
 
+  /**
+   * Called on form failure submission.
+   *
+   * @param errors {Object} Form errors object
+   * @param data {Object} Form data
+   */
   onErrorSubmit(errors, data) {}
 
+  /**
+  * Handler for input change called internally.
+  *
+  * @param event
+  * @return {Promise} Promise resolved when data and errors are set if any
+  */
   handleChange(event) {
     const name   = event.target.name;
     const value  = this._getNodeValue(event.target);
@@ -38,20 +46,58 @@ export default class Superform extends React.Component {
     ]);
   }
 
+  /**
+  * Handler for form submission. Your form should call it as `onSubmit` handler.
+  *
+  * @param event
+  * @return {Promise} Promise resolved with `onSuccessSubmit` or `onErrorSubmit` result
+  */
+  handleSubmit(event) {
+    event.preventDefault();
+    const errors = this._createErrors();
+    return this.markAsSubmitted()
+      .then(() => this._updateErrors(errors))
+      .then(() => this.isFormValid() ?
+        this.onSuccessSubmit(this.state.data) :
+        this.onErrorSubmit(this.state.errors, this.state.data));
+  }
+
+  /**
+   * Marks form as submitted by setting `this.status.submitted` to `true`.
+   *
+   * @return {Promise} Promise resolved after state is set.
+   */
   markAsSubmitted() {
     return new Promise((resolve) => {
       this.setState({ submitted: true }, resolve);
     });
   }
 
+  /**
+   * Determines whether form was submitted.
+   *
+   * @return {boolean}
+   */
   isSubmited() {
     return this.state.submitted;
   }
 
+  /**
+   * Returns value of specified field.
+   *
+   * @param name {string} Field name
+   * @return {string|boolean|undefined} Field value
+   */
   getValueOf(name) {
     return this.state.data[name];
   }
 
+  /**
+   * Links field value with form state. Simulates two way data binding.
+   *
+   * @param {string} Field name
+   * @return {Object}
+   */
   linkStateOf(name) {
     return {
       value: this.state.data[name],
@@ -59,10 +105,20 @@ export default class Superform extends React.Component {
     };
   }
 
+  /**
+   * Returns form data.
+   *
+   * @return {Object} Form data which is `this.state.data`
+   */
   getData() {
     return this.state.data;
   }
 
+  /**
+   * Returns form errors.
+   *
+   * @return {Object} Form data which is `this.state.errors`
+   */
   getErrors() {
     const errors = _(this.state.errors)
       .omitBy(errors => !errors.length)
@@ -71,6 +127,11 @@ export default class Superform extends React.Component {
     return errors;
   }
 
+  /**
+   * Returns errors of specified field.
+   *
+   * @param {Array}
+   */
   getErrorsOf(name) {
     const errors = _(this.getErrors())
       .pick(name)
@@ -79,6 +140,11 @@ export default class Superform extends React.Component {
     return errors;
   }
 
+  /**
+   * Determines whether form is valid or not based on form errors.
+   *
+   * @return {boolean}
+   */
   isFormValid() {
     const validity = _(this.getErrors())
       .keys()
@@ -87,6 +153,12 @@ export default class Superform extends React.Component {
     return validity;
   }
 
+  /**
+   * Determines whether field is valid or not based on form errors.
+   *
+   * @param name {string} Field name
+   * @return {boolean}
+   */
   isFieldValid(name) {
     const validity = _(this.getErrorsOf(name))
       .isEmpty()
@@ -94,6 +166,12 @@ export default class Superform extends React.Component {
     return validity;
   }
 
+  /**
+   * Returns final error message for particular field
+   *
+   * @param name {string} Field name
+   * @return {string} Error message for the field
+   */
   getErrorMessageOf(name) {
     if (!this.isSubmited() || this.isFieldValid(name)) return null;
     const error   = _(this.getErrorsOf(name)).first();
@@ -101,6 +179,7 @@ export default class Superform extends React.Component {
     return error.data ? this._parseMessage(message, error.data) : message;
   }
 
+  /** */
   _createErrors() {
     return _(this.refs)
       .mapValues(node => this._validateNode(node))
@@ -108,12 +187,14 @@ export default class Superform extends React.Component {
       .value();
   }
 
+  /** */
   _updateErrors(errors) {
     return new Promise(resolve => {
       this.setState({errors}, resolve);
     });
   }
 
+  /** */
   _updateDataOf(name, value) {
     return new Promise(resolve => {
       const data = _.assign({}, this.state.data, {[name]: value});
@@ -121,6 +202,7 @@ export default class Superform extends React.Component {
     });
   }
 
+  /** */
   _updateErrorsOf(name, fieldErrors) {
     return new Promise(resolve => {
       const errors = _.assign({}, this.state.errors, {[name]: fieldErrors});
@@ -128,29 +210,34 @@ export default class Superform extends React.Component {
     });
   }
 
+  /** */
   _getCustomMessageForRuleOf(name, rule) {
     const messages = this._getCustomMessagesOf(name);
     const message  = messages[rule];
     return message;
   }
 
+  /** */
   _getCustomMessagesOf(name) {
     const msgDataset = this.refs[name].dataset.messages;
     const messages   = msgDataset ? JSON.parse(msgDataset) : {};
     return messages;
   }
 
+  /** */
   _getMessage(name, rule) {
     const message = this._getCustomMessageForRuleOf(name, rule) || this.constructor.DEFAULT_MESSAGES[rule];
     if (!message) throw new Error(`Superform: There is no message for such rule. Passed: ${rule}`);
     return message;
   }
 
+  /** */
   _parseMessage(message, data) {
     const parsedMessage = message.replace(":data", data);
     return parsedMessage;
   }
 
+  /** */
   _validateNode(node) {
     const name  = node.name;
     const value = this._getNodeValue(node);
@@ -159,6 +246,7 @@ export default class Superform extends React.Component {
     return fails;
   }
 
+  /** */
   _getNodeValue(node) {
     switch(node.type) {
       case "checkbox":
@@ -168,6 +256,7 @@ export default class Superform extends React.Component {
     }
   }
 
+  /** */
   _collectRules(node) {
     const rules = {
       email:     node.type === "email",
@@ -183,6 +272,7 @@ export default class Superform extends React.Component {
     return rules;
   }
 
+  /** */
   _validate(value, rules) {
     const fails = [];
 
@@ -207,14 +297,17 @@ export default class Superform extends React.Component {
     return fails;
   }
 
+  /** */
   _valueMatchesPattern(value, pattern) {
     return new RegExp(pattern).test(value);
   }
 
+  /** */
   _valueExists(value) {
     return !!value;
   }
 
+  /** */
   _valueIsGreaterOrEqual(value, min) {
     const number = parseInt(value);
     const lower  = parseInt(min);
@@ -223,6 +316,7 @@ export default class Superform extends React.Component {
     return number >= lower;
   }
 
+  /** */
   _valueIsLowerOrEqual(value, max) {
     const number = parseInt(value);
     const higher = parseInt(max);
@@ -231,6 +325,7 @@ export default class Superform extends React.Component {
     return number <= higher;
   }
 
+  /** */
   _valueLengthIsGreaterOrEqual(value = "", minLength) {
     const length = value.length;
     const lower  = parseInt(minLength);
@@ -238,6 +333,7 @@ export default class Superform extends React.Component {
     return length >= lower;
   }
 
+  /** */
   _valueLengthIsLowerOrEqual(value = "", maxLength) {
     const length = value.length;
     const higher = parseInt(maxLength);
@@ -245,6 +341,7 @@ export default class Superform extends React.Component {
     return length <= higher;
   }
 
+  /** */
   _valueEqualsValueOf(value, equals) {
     return value === this.getValueOf(equals);
   }
@@ -261,3 +358,5 @@ Superform.DEFAULT_MESSAGES = {
   "maxLength": "Value is too long. Value length should be lower or equal :data.",
   "equals":    "Value must be the same as :data.",
 };
+
+export default Superform;
