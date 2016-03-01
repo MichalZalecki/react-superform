@@ -57,6 +57,32 @@ ReactDOM.render(<MyForm />, document.getElementById("root"));
 
 You can also check `examples` dir.
 
+## Available HTML5 validation methods
+
+* `max`
+* `maxLength`
+* `min`
+* `minLength`
+* `pattern`
+* `required`
+* `type="email"`
+* `type="number"`
+* `type="url"`
+
+## Available custom validation methods
+
+### Equality
+
+`data-equals="<other field name>"` check whether field is the same as *other field*.
+
+[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L69)
+
+## Custom messages
+
+`data-messages="<custom messages>"` allows to define custom messages. It accepts JSON object with keys corresponding to failed rules.
+
+[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L56-L59)
+
 ## Contributors
 
 * Super logo author: [Marcin Michalak](https://www.behance.net/marcinmichalak)

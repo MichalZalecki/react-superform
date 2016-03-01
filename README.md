@@ -57,6 +57,32 @@ ReactDOM.render(<MyForm />, document.getElementById("root"));
 
 You can also check `examples` dir.
 
+## Available HTML5 validation methods
+
+* `max`
+* `maxLength`
+* `min`
+* `minLength`
+* `pattern`
+* `required`
+* `type="email"`
+* `type="number"`
+* `type="url"`
+
+## Available custom validation methods
+
+### Equality
+
+`data-equals="<other field name>"` check whether field is the same as *other field*.
+
+[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L69)
+
+## Custom messages
+
+`data-messages="<custom messages>"` allows to define custom messages. It accepts JSON object with keys corresponding to failed rules.
+
+[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L56-L59)
+
 ## Contributors
 
 * Super logo author: [Marcin Michalak](https://www.behance.net/marcinmichalak)
@@ -76,10 +102,10 @@ Superform's Superclass
     * [.markAsSubmitted()](#Superform+markAsSubmitted) ⇒ <code>Promise</code>
     * [.isSubmited()](#Superform+isSubmited) ⇒ <code>boolean</code>
     * [.getValueOf(name)](#Superform+getValueOf) ⇒ <code>string</code> &#124; <code>boolean</code> &#124; <code>undefined</code>
-    * [.linkStateOf(Field)](#Superform+linkStateOf) ⇒ <code>Object</code>
+    * [.linkStateOf(name)](#Superform+linkStateOf) ⇒ <code>Object</code>
     * [.getData()](#Superform+getData) ⇒ <code>Object</code>
     * [.getErrors()](#Superform+getErrors) ⇒ <code>Object</code>
-    * [.getErrorsOf(name)](#Superform+getErrorsOf)
+    * [.getErrorsOf(name)](#Superform+getErrorsOf) ⇒ <code>Array</code>
     * [.isFormValid()](#Superform+isFormValid) ⇒ <code>boolean</code>
     * [.isFieldValid(name)](#Superform+isFieldValid) ⇒ <code>boolean</code>
     * [.getErrorMessageOf(name)](#Superform+getErrorMessageOf) ⇒ <code>string</code>
@@ -169,14 +195,14 @@ Returns value of specified field.
 | name | <code>string</code> | Field name |
 
 <a name="Superform+linkStateOf"></a>
-### superform.linkStateOf(Field) ⇒ <code>Object</code>
+### superform.linkStateOf(name) ⇒ <code>Object</code>
 Links field value with form state. Simulates two way data binding.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| Field | <code>string</code> | name |
+| name | <code>string</code> | Field name |
 
 <a name="Superform+getData"></a>
 ### superform.getData() ⇒ <code>Object</code>
@@ -191,14 +217,14 @@ Returns form errors.
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 **Returns**: <code>Object</code> - Form data which is `this.state.errors`  
 <a name="Superform+getErrorsOf"></a>
-### superform.getErrorsOf(name)
+### superform.getErrorsOf(name) ⇒ <code>Array</code>
 Returns errors of specified field.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 
-| Param | Type |
-| --- | --- |
-| name | <code>Array</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | Field name |
 
 <a name="Superform+isFormValid"></a>
 ### superform.isFormValid() ⇒ <code>boolean</code>
