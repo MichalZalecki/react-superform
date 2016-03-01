@@ -8,8 +8,8 @@ class Superform extends React.Component {
     super(props);
 
     this.state = {
-      data: {},
-      errors: {},
+      data:      {},
+      errors:    {},
       submitted: false,
     };
   }
@@ -95,13 +95,13 @@ class Superform extends React.Component {
   /**
    * Links field value with form state. Simulates two way data binding.
    *
-   * @param {string} Field name
+   * @param name {string} Field name
    * @return {Object}
    */
   linkStateOf(name) {
     return {
       value: this.state.data[name],
-      requestChange: () => this.handleChange({ target: this.refs[name] })
+      requestChange: () => this.handleChange({ target: this.refs[name] }),
     };
   }
 
@@ -120,24 +120,21 @@ class Superform extends React.Component {
    * @return {Object} Form data which is `this.state.errors`
    */
   getErrors() {
-    const errors = _(this.state.errors)
+    return _(this.state.errors)
       .omitBy(errors => !errors.length)
       .value();
-
-    return errors;
   }
 
   /**
    * Returns errors of specified field.
    *
-   * @param {Array}
+   * @param name {string} Field name
+   * @return {Array}
    */
   getErrorsOf(name) {
-    const errors = _(this.getErrors())
+    return _(this.getErrors())
       .pick(name)
       .get(name, []);
-
-    return errors;
   }
 
   /**
@@ -161,7 +158,7 @@ class Superform extends React.Component {
    */
   isFieldValid(name) {
     const validity = _(this.getErrorsOf(name))
-      .isEmpty()
+      .isEmpty();
 
     return validity;
   }
@@ -190,23 +187,23 @@ class Superform extends React.Component {
   /** */
   _updateErrors(errors) {
     return new Promise(resolve => {
-      this.setState({errors}, resolve);
+      this.setState({ errors }, resolve);
     });
   }
 
   /** */
   _updateDataOf(name, value) {
     return new Promise(resolve => {
-      const data = _.assign({}, this.state.data, {[name]: value});
-      this.setState({data}, resolve);
+      const data = _.assign({}, this.state.data, { [name]: value });
+      this.setState({ data }, resolve);
     });
   }
 
   /** */
   _updateErrorsOf(name, fieldErrors) {
     return new Promise(resolve => {
-      const errors = _.assign({}, this.state.errors, {[name]: fieldErrors});
-      this.setState({errors}, resolve);
+      const errors = _.assign({}, this.state.errors, { [name]: fieldErrors });
+      this.setState({ errors }, resolve);
     });
   }
 
@@ -227,7 +224,11 @@ class Superform extends React.Component {
   /** */
   _getMessage(name, rule) {
     const message = this._getCustomMessageForRuleOf(name, rule) || this.constructor.DEFAULT_MESSAGES[rule];
-    if (!message) throw new Error(`Superform: There is no message for such rule. Passed: ${rule}`);
+
+    if (!message) {
+      throw new Error(`Superform: There is no message for such rule. Passed: ${rule}`);
+    }
+
     return message;
   }
 
@@ -247,7 +248,7 @@ class Superform extends React.Component {
 
   /** */
   _getNodeValue(node) {
-    switch(node.type) {
+    switch (node.type) {
       case "checkbox":
         return node.checked;
       default:
@@ -275,23 +276,45 @@ class Superform extends React.Component {
   _validate(value, rules) {
     const fails = [];
 
-    rules.required && !this._valueExists(value) && fails.push({ rule: "required" });
+    if (rules.required && !this._valueExists(value)) {
+      fails.push({ rule: "required" });
+    }
 
     if (rules.pattern) {
-      rules.pattern  && !this._valueMatchesPattern(value, rules.pattern) && fails.push({ rule: "pattern" });
+      if (rules.pattern && !this._valueMatchesPattern(value, rules.pattern)) {
+        fails.push({ rule: "pattern" });
+      }
     } else {
-      rules.email && !validator.isEmail(value) && fails.push({ rule: "email" });
-      rules.url   && !validator.isURL(value, {require_protocol: true}) && fails.push({ rule: "url" });
+      if (rules.email && !validator.isEmail(value)) {
+        fails.push({ rule: "email" });
+      }
+
+      if (rules.url && !validator.isURL(value, { require_protocol: true })) {
+        fails.push({ rule: "url" });
+      }
     }
 
     if (rules.required || this._valueExists(value)) {
-      rules.min       && !this._valueIsGreaterOrEqual(value, rules.min)             && fails.push({ rule: "min", data: rules.min });
-      rules.max       && !this._valueIsLowerOrEqual(value, rules.max)               && fails.push({ rule: "max", data: rules.max });
-      rules.minLength && !this._valueLengthIsGreaterOrEqual(value, rules.minLength) && fails.push({ rule: "minLength", data: rules.minLength });
-      rules.maxLength && !this._valueLengthIsLowerOrEqual(value, rules.maxLength)   && fails.push({ rule: "maxLength", data: rules.maxLength });
+      if (rules.min && !this._valueIsGreaterOrEqual(value, rules.min)) {
+        fails.push({ rule: "min", data: rules.min });
+      }
+
+      if (rules.max && !this._valueIsLowerOrEqual(value, rules.max)) {
+        fails.push({ rule: "max", data: rules.max });
+      }
+
+      if (rules.minLength && !this._valueLengthIsGreaterOrEqual(value, rules.minLength)) {
+        fails.push({ rule: "minLength", data: rules.minLength });
+      }
+
+      if (rules.maxLength && !this._valueLengthIsLowerOrEqual(value, rules.maxLength)) {
+        fails.push({ rule: "maxLength", data: rules.maxLength });
+      }
     }
 
-    rules.equals && !this._valueEqualsValueOf(value, rules.equals) && fails.push({ rule: "equals", data: rules.equals });
+    if (rules.equals && !this._valueEqualsValueOf(value, rules.equals)) {
+      fails.push({ rule: "equals", data: rules.equals });
+    }
 
     return fails;
   }
@@ -308,18 +331,22 @@ class Superform extends React.Component {
 
   /** */
   _valueIsGreaterOrEqual(value, min) {
-    const number = parseInt(value);
-    const lower  = parseInt(min);
-    if (Number.isNaN(lower)) throw Error(`Superform: Invalid "min" rule. Use only with numbers. Passed: ${JSON.stringify(min)}`);
+    const number = parseInt(value, 10);
+    const lower  = parseInt(min, 10);
+    if (Number.isNaN(lower)) {
+      throw Error(`Superform: Invalid "min" rule. Use only with numbers. Passed: ${JSON.stringify(min)}`);
+    }
     if (Number.isNaN(number)) return false;
     return number >= lower;
   }
 
   /** */
   _valueIsLowerOrEqual(value, max) {
-    const number = parseInt(value);
-    const higher = parseInt(max);
-    if (Number.isNaN(higher)) throw Error(`Superform: Invalid "max" rule. Use only with numbers. Passed: ${JSON.stringify(max)}`);
+    const number = parseInt(value, 10);
+    const higher = parseInt(max, 10);
+    if (Number.isNaN(higher)) {
+      throw Error(`Superform: Invalid "max" rule. Use only with numbers. Passed: ${JSON.stringify(max)}`);
+    }
     if (Number.isNaN(number)) return false;
     return number <= higher;
   }
@@ -327,16 +354,20 @@ class Superform extends React.Component {
   /** */
   _valueLengthIsGreaterOrEqual(value = "", minLength) {
     const length = value.length;
-    const lower  = parseInt(minLength);
-    if (Number.isNaN(lower)) throw Error(`Superform: Invalid "minLength" rule. Use only with numbers. Passed: ${JSON.stringify(minLength)}`);
+    const lower  = parseInt(minLength, 10);
+    if (Number.isNaN(lower)) {
+      throw Error(`Superform: Invalid "minLength" rule. Use only with numbers. Passed: ${JSON.stringify(minLength)}`);
+    }
     return length >= lower;
   }
 
   /** */
   _valueLengthIsLowerOrEqual(value = "", maxLength) {
     const length = value.length;
-    const higher = parseInt(maxLength);
-    if (Number.isNaN(higher)) throw Error(`Superform: Invalid "maxLength" rule. Use only with numbers. Passed: ${JSON.stringify(maxLength)}`);
+    const higher = parseInt(maxLength, 10);
+    if (Number.isNaN(higher)) {
+      throw Error(`Superform: Invalid "maxLength" rule. Use only with numbers. Passed: ${JSON.stringify(maxLength)}`);
+    }
     return length <= higher;
   }
 
@@ -347,15 +378,15 @@ class Superform extends React.Component {
 }
 
 Superform.DEFAULT_MESSAGES = {
-  "email":     "This is not a valid email.",
-  "url":       "This is not a valid URL.",
-  "required":  "Field is required.",
-  "pattern":   "Value format is invalid.",
-  "min":       "Value should be greater or equal :data.",
-  "max":       "Value should be lower or equal :data.",
-  "minLength": "Value is too short. Value length should be greater or equal :data.",
-  "maxLength": "Value is too long. Value length should be lower or equal :data.",
-  "equals":    "Value must be the same as :data.",
+  email:     "This is not a valid email.",
+  url:       "This is not a valid URL.",
+  required:  "Field is required.",
+  pattern:   "Value format is invalid.",
+  min:       "Value should be greater or equal :data.",
+  max:       "Value should be lower or equal :data.",
+  minLength: "Value is too short. Value length should be greater or equal :data.",
+  maxLength: "Value is too long. Value length should be lower or equal :data.",
+  equals:    "Value must be the same as :data.",
 };
 
 export default Superform;
