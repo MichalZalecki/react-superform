@@ -261,6 +261,7 @@ class Superform extends React.Component {
     const rules = {
       email:     node.type === "email",
       url:       node.type === "url",
+      number:    node.type === "number",
       pattern:   node.pattern,
       required:  node.required,
       min:       node.getAttribute("min"),
@@ -291,6 +292,10 @@ class Superform extends React.Component {
 
       if (rules.url && !validator.isURL(value, { require_protocol: true })) {
         fails.push({ rule: "url" });
+      }
+
+      if (rules.number && !validator.isNumeric(value)) {
+        fails.push({ rule: "number" });
       }
     }
 
@@ -380,6 +385,7 @@ class Superform extends React.Component {
 Superform.DEFAULT_MESSAGES = {
   email:     "This is not a valid email.",
   url:       "This is not a valid URL.",
+  number:    "This is not a number.",
   required:  "Field is required.",
   pattern:   "Value format is invalid.",
   min:       "Value should be greater or equal :data.",

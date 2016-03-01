@@ -131,6 +131,13 @@ describe("Superform", () => {
       expect(component.getErrorMessageOf("name")).toEqual("This is not a valid email.");
     });
 
+    it("returns 'This is not a number.' for number field and submitted form", () => {
+      component.state.submitted = true;
+      component.state.errors = {name: [{rule: "number"}]};
+      component.refs = {name: document.createElement("input")};
+      expect(component.getErrorMessageOf("name")).toEqual("This is not a number.");
+    });
+
     it("returns 'This is not a valid URL.' for url field and submitted form", () => {
       component.state.submitted = true;
       component.state.errors = {name: [{rule: "url"}]};
