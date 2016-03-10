@@ -43,28 +43,45 @@
                     <div className={`form-group ${this.getErrorMessageOf("email") ? "has-error" : "" }`}>
                       <label className="control-label" htmlFor="email">Email</label>
                       <input
-                        type="email" className="form-control" name="email" id="email" ref="email"
-                        valueLink={this.linkStateOf("email")} required/>
+                        className="form-control"
+                        type="email"
+                        id="email"
+                        name="email"
+                        ref="email"
+                        valueLink={this.linkStateOf("email")}
+                        required
+                      />
                       <span className="help-block">{ this.getErrorMessageOf("email") }</span>
                     </div>
 
                     <div className={`form-group ${this.getErrorMessageOf("password") ? "has-error" : "" }`}>
                       <label className="control-label" htmlFor="password">Password</label>
                       <input
-                        type="password" className="form-control" name="password" id="password" ref="password"
-                        valueLink={this.linkStateOf("password")} pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*"
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        ref="password"
+                        name="password"
+                        valueLink={this.linkStateOf("password")}
+                        pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*"
                         data-messages={JSON.stringify({
                           pattern: "Password must contain at least one digit, upper case and lower case letter",
                           minLength: "Password must contain at least :data characters"
                         })}
-                        minLength="8" required/>
+                        minLength="8"
+                        required
+                      />
                       <span className="help-block">{ this.getErrorMessageOf("password") }</span>
                     </div>
 
                     <div className={`form-group ${this.getErrorMessageOf("repeatPassword") ? "has-error" : "" }`}>
                       <label className="control-label" htmlFor="repeatPassword">Repeat Password</label>
                       <input
-                        type="password" className="form-control" name="repeatPassword" id="repeatPassword" ref="repeatPassword"
+                        className="form-control"
+                        type="password"
+                        id="repeatPassword"
+                        name="repeatPassword"
+                        ref="repeatPassword"
                         valueLink={this.linkStateOf("repeatPassword")}
                         data-equals="password"
                         data-messages={JSON.stringify({
@@ -76,7 +93,14 @@
 
                     <div className={`form-group ${this.getErrorMessageOf("mood") ? "has-error" : "" }`}>
                       <label className="control-label" htmlFor="mood">Mood</label>
-                      <select className="form-control" name="mood" id="mood" ref="mood" valueLink={this.linkStateOf("mood")} required>
+                      <select
+                        className="form-control"
+                        id="mood"
+                        name="mood"
+                        ref="mood"
+                        valueLink={this.linkStateOf("mood")}
+                        required
+                      >
                         <option value="">Select&hellip;</option>
                         <option value="Happy">Happy</option>
                         <option value="Cool">Cool</option>
@@ -90,8 +114,13 @@
                     <div className={ this.getErrorMessageOf("acceptConditions") ? "has-error" : "" }>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" name="acceptConditions" ref="acceptConditions"
-                            valueLink={this.linkStateOf("acceptConditions")} required/>
+                          <input
+                            type="checkbox"
+                            name="acceptConditions"
+                            ref="acceptConditions"
+                            valueLink={this.linkStateOf("acceptConditions")}
+                            required
+                          />
                           I'll behave nicely. { this.getErrorMessageOf("acceptConditions") }
                         </label>
                       </div>

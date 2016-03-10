@@ -46,33 +46,51 @@
                   <label className={ this.getErrorMessageOf("email") ? "is-invalid-label" : ""}>
                     Email
                     <input
-                      type="email" className={ this.getErrorMessageOf("email") ? "is-invalid-input" : ""}
-                      name="email" id="email" ref="email" valueLink={this.linkStateOf("email")} required/>
+                      type="email"
+                      className={ this.getErrorMessageOf("email") ? "is-invalid-input" : ""}
+                      name="email"
+                      id="email"
+                      ref="email"
+                      valueLink={this.linkStateOf("email")}
+                      required
+                    />
                     <span className={`form-error ${ this.getErrorMessageOf("email") ? "is-visible" : ""}` }>{ this.getErrorMessageOf("email") }</span>
                   </label>
 
                   <label className={ this.getErrorMessageOf("password") ? "is-invalid-label" : ""}>
                     Password
                     <input
-                      type="password" className={ this.getErrorMessageOf("password") ? "is-invalid-input" : ""}
-                      name="password" id="password" ref="password" valueLink={this.linkStateOf("password")}
-                      pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*" minLength="8" required
+                      type="password"
+                      className={ this.getErrorMessageOf("password") ? "is-invalid-input" : ""}
+                      name="password"
+                      id="password"
+                      ref="password"
+                      valueLink={this.linkStateOf("password")}
+                      pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*"
+                      minLength="8"
                       data-messages={JSON.stringify({
                         pattern: "Password must contain at least one digit, upper case and lower case letter",
                         minLength: "Password must contain at least :data characters"
-                      })} />
+                      })}
+                      required
+                    />
                     <span className={`form-error ${ this.getErrorMessageOf("password") ? "is-visible" : ""}` }>{ this.getErrorMessageOf("password") }</span>
                   </label>
 
                   <label className={ this.getErrorMessageOf("repeatPassword") ? "is-invalid-label" : ""}>
                     Repeat Password
                     <input
-                      type="password" className={ this.getErrorMessageOf("repeatPassword") ? "is-invalid-input" : ""}
-                      name="repeatPassword" id="repeatPassword" ref="repeatPassword" valueLink={this.linkStateOf("repeatPassword")}
-                      data-equals="password" required
+                      type="password"
+                      className={ this.getErrorMessageOf("repeatPassword") ? "is-invalid-input" : ""}
+                      name="repeatPassword"
+                      id="repeatPassword"
+                      ref="repeatPassword"
+                      valueLink={this.linkStateOf("repeatPassword")}
+                      data-equals="password"
                       data-messages={JSON.stringify({
                         equals: "Passwords doesn't match"
                       })}
+                      required
                     />
                     <span className={`form-error ${ this.getErrorMessageOf("repeatPassword") ? "is-visible" : ""}` }>{ this.getErrorMessageOf("repeatPassword") }</span>
                   </label>
@@ -81,7 +99,12 @@
                     Mood
                     <select
                       className={ this.getErrorMessageOf("mood") ? "is-invalid-input" : ""}
-                      name="mood" id="mood" ref="mood" valueLink={this.linkStateOf("mood")} required>
+                      name="mood"
+                      id="mood"
+                      ref="mood"
+                      valueLink={this.linkStateOf("mood")}
+                      required
+                    >
                       <option value="">Select&hellip;</option>
                       <option value="Happy">Happy</option>
                       <option value="Cool">Cool</option>
@@ -93,8 +116,12 @@
                   </label>
 
                   <p>
-                    <input type="checkbox" name="acceptConditions" ref="acceptConditions"
-                      valueLink={this.linkStateOf("acceptConditions")} required
+                    <input
+                      type="checkbox"
+                      name="acceptConditions"
+                      ref="acceptConditions"
+                      valueLink={this.linkStateOf("acceptConditions")}
+                      required
                       className={ this.getErrorMessageOf("mood") ? "is-invalid-input" : ""}
                     />
                     <label className={ this.getErrorMessageOf("acceptConditions") ? "is-invalid-label" : ""}>
