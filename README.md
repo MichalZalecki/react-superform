@@ -77,6 +77,8 @@ You can also check `examples` dir.
 
 [Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L69)
 
+**Warning:** Avoid deep circular equality check. `A -> B -> A` will end up with exception but `A -> B -> C -> A` can freeze the tab.
+
 ## Custom messages
 
 `data-messages="<custom messages>"` allows to define custom messages. It accepts JSON object with keys corresponding to failed rules.
@@ -109,25 +111,6 @@ Superform's Superclass
     * [.isFormValid()](#Superform+isFormValid) ⇒ <code>boolean</code>
     * [.isFieldValid(name)](#Superform+isFieldValid) ⇒ <code>boolean</code>
     * [.getErrorMessageOf(name)](#Superform+getErrorMessageOf) ⇒ <code>string</code>
-    * [._createErrors()](#Superform+_createErrors)
-    * [._updateErrors()](#Superform+_updateErrors)
-    * [._updateDataOf()](#Superform+_updateDataOf)
-    * [._updateErrorsOf()](#Superform+_updateErrorsOf)
-    * [._getCustomMessageForRuleOf()](#Superform+_getCustomMessageForRuleOf)
-    * [._getCustomMessagesOf()](#Superform+_getCustomMessagesOf)
-    * [._getMessage()](#Superform+_getMessage)
-    * [._parseMessage()](#Superform+_parseMessage)
-    * [._validateNode()](#Superform+_validateNode)
-    * [._getNodeValue()](#Superform+_getNodeValue)
-    * [._collectRules()](#Superform+_collectRules)
-    * [._validate()](#Superform+_validate)
-    * [._valueMatchesPattern()](#Superform+_valueMatchesPattern)
-    * [._valueExists()](#Superform+_valueExists)
-    * [._valueIsGreaterOrEqual()](#Superform+_valueIsGreaterOrEqual)
-    * [._valueIsLowerOrEqual()](#Superform+_valueIsLowerOrEqual)
-    * [._valueLengthIsGreaterOrEqual()](#Superform+_valueLengthIsGreaterOrEqual)
-    * [._valueLengthIsLowerOrEqual()](#Superform+_valueLengthIsLowerOrEqual)
-    * [._valueEqualsValueOf()](#Superform+_valueEqualsValueOf)
 
 <a name="Superform+onSuccessSubmit"></a>
 ### superform.onSuccessSubmit(data)
@@ -252,60 +235,3 @@ Returns final error message for particular field
 | --- | --- | --- |
 | name | <code>string</code> | Field name |
 
-<a name="Superform+_createErrors"></a>
-### superform._createErrors()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_updateErrors"></a>
-### superform._updateErrors()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_updateDataOf"></a>
-### superform._updateDataOf()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_updateErrorsOf"></a>
-### superform._updateErrorsOf()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_getCustomMessageForRuleOf"></a>
-### superform._getCustomMessageForRuleOf()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_getCustomMessagesOf"></a>
-### superform._getCustomMessagesOf()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_getMessage"></a>
-### superform._getMessage()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_parseMessage"></a>
-### superform._parseMessage()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_validateNode"></a>
-### superform._validateNode()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_getNodeValue"></a>
-### superform._getNodeValue()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_collectRules"></a>
-### superform._collectRules()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_validate"></a>
-### superform._validate()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueMatchesPattern"></a>
-### superform._valueMatchesPattern()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueExists"></a>
-### superform._valueExists()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueIsGreaterOrEqual"></a>
-### superform._valueIsGreaterOrEqual()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueIsLowerOrEqual"></a>
-### superform._valueIsLowerOrEqual()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueLengthIsGreaterOrEqual"></a>
-### superform._valueLengthIsGreaterOrEqual()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueLengthIsLowerOrEqual"></a>
-### superform._valueLengthIsLowerOrEqual()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  
-<a name="Superform+_valueEqualsValueOf"></a>
-### superform._valueEqualsValueOf()
-**Kind**: instance method of <code>[Superform](#Superform)</code>  

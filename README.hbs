@@ -77,6 +77,8 @@ You can also check `examples` dir.
 
 [Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L69)
 
+**Warning:** Avoid deep circular equality check. `A -> B -> A` will end up with exception but `A -> B -> C -> A` can freeze the tab.
+
 ## Custom messages
 
 `data-messages="<custom messages>"` allows to define custom messages. It accepts JSON object with keys corresponding to failed rules.
