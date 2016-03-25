@@ -10,6 +10,7 @@ class Superform extends React.Component {
     this.state = {
       data:      {},
       errors:    {},
+      links:     {},
       submitted: false,
     };
   }
@@ -39,11 +40,14 @@ class Superform extends React.Component {
     const name   = event.target.name;
     const value  = this._getNodeValue(event.target);
     const errors = this._validateNode(event.target);
+    const link   = this._getLink(event.target);
+
+    link && this._setLink(name, link);
 
     return Promise.all([
       this._updateDataOf(name, value),
       this._updateErrorsOf(name, errors),
-    ]);
+    ]).then(() => this._checkLinks(name));
   }
 
   /**
@@ -176,7 +180,6 @@ class Superform extends React.Component {
     return error.data ? this._parseMessage(message, error.data) : message;
   }
 
-  /** */
   _createErrors() {
     return _(this.refs)
       .mapValues(node => this._validateNode(node))
@@ -184,14 +187,12 @@ class Superform extends React.Component {
       .value();
   }
 
-  /** */
   _updateErrors(errors) {
     return new Promise(resolve => {
       this.setState({ errors }, resolve);
     });
   }
 
-  /** */
   _updateDataOf(name, value) {
     return new Promise(resolve => {
       const data = _.assign({}, this.state.data, { [name]: value });
@@ -199,7 +200,6 @@ class Superform extends React.Component {
     });
   }
 
-  /** */
   _updateErrorsOf(name, fieldErrors) {
     return new Promise(resolve => {
       const errors = _.assign({}, this.state.errors, { [name]: fieldErrors });
@@ -207,21 +207,18 @@ class Superform extends React.Component {
     });
   }
 
-  /** */
   _getCustomMessageForRuleOf(name, rule) {
     const messages = this._getCustomMessagesOf(name);
     const message  = messages[rule];
     return message;
   }
 
-  /** */
   _getCustomMessagesOf(name) {
     const msgDataset = this.refs[name].dataset.messages;
     const messages   = msgDataset ? JSON.parse(msgDataset) : {};
     return messages;
   }
 
-  /** */
   _getMessage(name, rule) {
     const message = this._getCustomMessageForRuleOf(name, rule) || this.constructor.DEFAULT_MESSAGES[rule];
 
@@ -232,13 +229,11 @@ class Superform extends React.Component {
     return message;
   }
 
-  /** */
   _parseMessage(message, data) {
     const parsedMessage = message.replace(":data", data);
     return parsedMessage;
   }
 
-  /** */
   _validateNode(node) {
     const value = this._getNodeValue(node);
     const rules = this._collectRules(node);
@@ -246,7 +241,33 @@ class Superform extends React.Component {
     return fails;
   }
 
-  /** */
+  _getLink(node) {
+    return node.dataset.equals || null;
+  }
+
+  _setLink(name, link) {
+    return new Promise(resolve => {
+      const fieldLinks = _.uniq([...(this.state.links[link] || []), name]);
+      const links = _.assign({}, this.state.links, { [link]: fieldLinks });
+
+      if (name === link) {
+        throw new Error(`Cannot cheack equality to itself: ${link}`);
+      }
+
+      if (_.includes(fieldLinks, link)) {
+        throw new Error(`Circular equality check: ${link}`);
+      }
+
+      this.setState({ links }, resolve);
+    });
+  }
+
+  _checkLinks(name) {
+    (this.state.links[name] || []).forEach(link => {
+      this.handleChange({ target: this.refs[link] })
+    });
+  }
+
   _getNodeValue(node) {
     switch (node.type) {
       case "checkbox":
@@ -256,7 +277,6 @@ class Superform extends React.Component {
     }
   }
 
-  /** */
   _collectRules(node) {
     const rules = {
       email:     node.type === "email",
@@ -273,7 +293,6 @@ class Superform extends React.Component {
     return rules;
   }
 
-  /** */
   _validate(value, rules) {
     const fails = [];
 
@@ -324,17 +343,14 @@ class Superform extends React.Component {
     return fails;
   }
 
-  /** */
   _valueMatchesPattern(value, pattern) {
     return new RegExp(pattern).test(value);
   }
 
-  /** */
   _valueExists(value) {
     return !!value;
   }
 
-  /** */
   _valueIsGreaterOrEqual(value, min) {
     const number = parseInt(value, 10);
     const lower  = parseInt(min, 10);
@@ -345,7 +361,6 @@ class Superform extends React.Component {
     return number >= lower;
   }
 
-  /** */
   _valueIsLowerOrEqual(value, max) {
     const number = parseInt(value, 10);
     const higher = parseInt(max, 10);
@@ -356,7 +371,6 @@ class Superform extends React.Component {
     return number <= higher;
   }
 
-  /** */
   _valueLengthIsGreaterOrEqual(value = "", minLength) {
     const length = value.length;
     const lower  = parseInt(minLength, 10);
@@ -366,7 +380,6 @@ class Superform extends React.Component {
     return length >= lower;
   }
 
-  /** */
   _valueLengthIsLowerOrEqual(value = "", maxLength) {
     const length = value.length;
     const higher = parseInt(maxLength, 10);
@@ -376,7 +389,6 @@ class Superform extends React.Component {
     return length <= higher;
   }
 
-  /** */
   _valueEqualsValueOf(value, equals) {
     return value === this.getValueOf(equals);
   }
