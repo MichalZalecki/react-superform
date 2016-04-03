@@ -1,5 +1,7 @@
 # react-superform
 
+[![Build Status](https://travis-ci.org/MichalZalecki/react-superform.svg?branch=master)](https://travis-ci.org/MichalZalecki/react-superform)
+
 ![react-superform](http://i.imgur.com/Br7NDBx.png)
 
 Form with superpowers for ReactJS
@@ -75,7 +77,7 @@ You can also check `examples` dir.
 
 `data-equals="<other field name>"` check whether field is the same as *other field*.
 
-[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L69)
+[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L86)
 
 **Warning:** Avoid deep circular equality check. `A -> B -> A` will end up with exception but `A -> B -> C -> A` can freeze the tab.
 
@@ -83,7 +85,7 @@ You can also check `examples` dir.
 
 `data-messages="<custom messages>"` allows to define custom messages. It accepts JSON object with keys corresponding to failed rules.
 
-[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L56-L59)
+[Example](https://github.com/MichalZalecki/react-superform/blob/master/examples/signup-bootstrap.html#L87-L89)
 
 ## Contributors
 
@@ -91,6 +93,7 @@ You can also check `examples` dir.
 * Main Maintainer: [Michal Zalecki](http://michalzalecki.com/)
 
 <a name="Superform"></a>
+
 ## Superform
 Superform's Superclass
 
@@ -113,6 +116,7 @@ Superform's Superclass
     * [.getErrorMessageOf(name)](#Superform+getErrorMessageOf) ⇒ <code>string</code>
 
 <a name="Superform+onSuccessSubmit"></a>
+
 ### superform.onSuccessSubmit(data)
 Called on form success submission.
 
@@ -123,6 +127,7 @@ Called on form success submission.
 | data | <code>Object</code> | Form data with all fields valid |
 
 <a name="Superform+onErrorSubmit"></a>
+
 ### superform.onErrorSubmit(errors, data)
 Called on form failure submission.
 
@@ -134,6 +139,7 @@ Called on form failure submission.
 | data | <code>Object</code> | Form data |
 
 <a name="Superform+handleChange"></a>
+
 ### superform.handleChange(event) ⇒ <code>Promise</code>
 Handler for input change called internally.
 
@@ -145,6 +151,7 @@ Handler for input change called internally.
 | event | 
 
 <a name="Superform+handleSubmit"></a>
+
 ### superform.handleSubmit(event) ⇒ <code>Promise</code>
 Handler for form submission. Your form should call it as `onSubmit` handler.
 
@@ -156,17 +163,20 @@ Handler for form submission. Your form should call it as `onSubmit` handler.
 | event | 
 
 <a name="Superform+markAsSubmitted"></a>
+
 ### superform.markAsSubmitted() ⇒ <code>Promise</code>
 Marks form as submitted by setting `this.status.submitted` to `true`.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 **Returns**: <code>Promise</code> - Promise resolved after state is set.  
 <a name="Superform+isSubmited"></a>
+
 ### superform.isSubmited() ⇒ <code>boolean</code>
 Determines whether form was submitted.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 <a name="Superform+getValueOf"></a>
+
 ### superform.getValueOf(name) ⇒ <code>string</code> &#124; <code>boolean</code> &#124; <code>undefined</code>
 Returns value of specified field.
 
@@ -178,6 +188,7 @@ Returns value of specified field.
 | name | <code>string</code> | Field name |
 
 <a name="Superform+linkStateOf"></a>
+
 ### superform.linkStateOf(name) ⇒ <code>Object</code>
 Links field value with form state. Simulates two way data binding.
 
@@ -188,18 +199,21 @@ Links field value with form state. Simulates two way data binding.
 | name | <code>string</code> | Field name |
 
 <a name="Superform+getData"></a>
+
 ### superform.getData() ⇒ <code>Object</code>
 Returns form data.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 **Returns**: <code>Object</code> - Form data which is `this.state.data`  
 <a name="Superform+getErrors"></a>
+
 ### superform.getErrors() ⇒ <code>Object</code>
 Returns form errors.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 **Returns**: <code>Object</code> - Form data which is `this.state.errors`  
 <a name="Superform+getErrorsOf"></a>
+
 ### superform.getErrorsOf(name) ⇒ <code>Array</code>
 Returns errors of specified field.
 
@@ -210,11 +224,13 @@ Returns errors of specified field.
 | name | <code>string</code> | Field name |
 
 <a name="Superform+isFormValid"></a>
+
 ### superform.isFormValid() ⇒ <code>boolean</code>
 Determines whether form is valid or not based on form errors.
 
 **Kind**: instance method of <code>[Superform](#Superform)</code>  
 <a name="Superform+isFieldValid"></a>
+
 ### superform.isFieldValid(name) ⇒ <code>boolean</code>
 Determines whether field is valid or not based on form errors.
 
@@ -225,6 +241,7 @@ Determines whether field is valid or not based on form errors.
 | name | <code>string</code> | Field name |
 
 <a name="Superform+getErrorMessageOf"></a>
+
 ### superform.getErrorMessageOf(name) ⇒ <code>string</code>
 Returns final error message for particular field
 
