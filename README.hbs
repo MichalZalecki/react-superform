@@ -35,7 +35,8 @@ class MyForm extends Superform {
           type="email" // validate email
           ref="email"  // ref is required to read the attributes
           name="email" // name field
-          valueLink={ this.linkStateOf("email") } // two way data binding
+          value={ this.getValueOf("email") }
+          onChange={ this.handleChange.bind(this) }
           required     // field is required
         />
         <p className="error">{ this.getErrorMessageOf("email") }</p>

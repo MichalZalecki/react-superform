@@ -20,11 +20,11 @@
   <script type="text/babel">
     class MyForm extends Superform {
       onSuccessSubmit(data) {
-        alert(`Success submit with:\n${JSON.stringify(data, 2, 2)}`);
+        console.log(data);
       }
 
       onErrorSubmit(errors, data) {
-        alert(`Error submit with:\n${JSON.stringify(data, 2, 2)}\n and errors:\n${JSON.stringify(errors, 2, 2)}`);
+        console.log(errors, data);
       }
 
       render() {
@@ -48,7 +48,8 @@
                         id="email"
                         name="email"
                         ref="email"
-                        valueLink={this.linkStateOf("email")}
+                        value={ this.getValueOf("email") }
+                        onChange={ this.handleChange.bind(this) }
                         required
                       />
                       <span className="help-block">{ this.getErrorMessageOf("email") }</span>
@@ -62,7 +63,8 @@
                         id="password"
                         ref="password"
                         name="password"
-                        valueLink={this.linkStateOf("password")}
+                        value={ this.getValueOf("password") }
+                        onChange={ this.handleChange.bind(this) }
                         pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*"
                         data-messages={JSON.stringify({
                           pattern: "Password must contain at least one digit, upper case and lower case letter",
@@ -82,7 +84,8 @@
                         id="repeatPassword"
                         name="repeatPassword"
                         ref="repeatPassword"
-                        valueLink={this.linkStateOf("repeatPassword")}
+                        value={ this.getValueOf("repeatPassword") }
+                        onChange={ this.handleChange.bind(this) }
                         data-equals="password"
                         data-messages={JSON.stringify({
                           equals: "Passwords doesn't match"
@@ -99,7 +102,8 @@
                         id="mood"
                         name="mood"
                         ref="mood"
-                        valueLink={this.linkStateOf("mood")}
+                        value={ this.getValueOf("mood") }
+                        onChange={ this.handleChange.bind(this) }
                         required
                       >
                         <option value="">Select&hellip;</option>
@@ -119,7 +123,8 @@
                             type="checkbox"
                             name="acceptConditions"
                             ref="acceptConditions"
-                            valueLink={this.linkStateOf("acceptConditions")}
+                            value={ this.getValueOf("acceptConditions") }
+                            onChange={ this.handleChange.bind(this) }
                             required
                           />
                           I'll behave nicely. { this.getErrorMessageOf("acceptConditions") }
